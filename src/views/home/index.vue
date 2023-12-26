@@ -1,10 +1,10 @@
 <template>
   <header class="header">
-    <span>Become Lemon8 Pro Now</span>
+    <span>{{ $t('login.lemonaidea_slogan') }}</span>
     <!-- <img src="https://cdn.jsdelivr.net/gh/fonghehe/picture/vue-h5-template/logo.png" /><span> {{ $t('title') }}</span> -->
   </header>
   <div class="intro-header">
-    <span>#1 Pick For Lemon8 Creator</span>
+    <span>{{ $t('login.lemonaidea_subtitle') }}</span>
     <!-- <div>{{ $t('introduction') }}</div>
     <a href="https://github.com/sunniejs/vue-h5-template.git">
       <Github />
@@ -13,41 +13,37 @@
   <div class="grid_box">
     <div class="grid yellow">
       <div class="grid_title">
-        <p>Title</p>
-        <span>Paraphrasing</span>
+        <p>{{ $t('homepage.lemonaidea_title_imitation') }}</p>
       </div>
       <div class="grid_button" @click="handleGoto(0)">
-        <span>Start Creating</span>
+        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
         <img src="@/assets/arrow-right.png" alt="" />
       </div>
     </div>
     <div class="grid light_yellow">
       <div class="grid_title">
-        <p>Body Text</p>
-        <span>Paraphrasing</span>
+        <p>{{ $t('homepage.lemonaidea_text_imitation') }}</p>
       </div>
       <div class="grid_button" @click="handleGoto(1)">
-        <span>Start Creating</span>
+        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
         <img src="@/assets/arrow-right.png" alt="" />
       </div>
     </div>
     <div class="grid purple">
       <div class="grid_title">
-        <p>Title</p>
-        <span>Optimization</span>
+        <p>{{ $t('homepage.lemonaidea_title_improve') }}</p>
       </div>
       <div class="grid_button lighting" @click="handleGoto(2)">
-        <span>Start Creating</span>
+        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
         <img src="@/assets/arrow-right-light.png" alt="" />
       </div>
     </div>
     <div class="grid green">
       <div class="grid_title">
-        <p>Body Text</p>
-        <span>Optimization</span>
+        <p>{{ $t('homepage.lemonaidea_text_improve') }}</p>
       </div>
       <div class="grid_button lighting" @click="handleGoto(3)">
-        <span>Start Creating</span>
+        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
         <img src="@/assets/arrow-right-light.png" alt="" />
       </div>
     </div>

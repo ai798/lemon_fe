@@ -31,8 +31,8 @@
         <img v-if="!is_select" class="small_icon_arrow" src="@/assets/chevron-down.png" alt="" />
         <img v-else class="small_icon_arrow" src="@/assets/chevron-up.png" alt="" />
       </div>
-      <div class="option_panel" v-show="is_select" v-for="item in languages" :key="item">
-        <span>{{ item }}</span>
+      <div class="option_panel" v-show="is_select" v-for="item in languages" :key="item.type">
+        <span @click="changeLang(item.type)">{{ item.name }}</span>
       </div>
     </template>
   </nut-popup>
@@ -58,8 +58,14 @@
 <script lang="ts" setup name="BasicLayoutPage">
   import { useRouter } from 'vue-router';
   import { Home, Horizontal, My, Location } from '@nutui/icons-vue';
+  import { setLang } from '@/i18n';
 
-  const languages = ref(['日本語', 'English', 'ภาษาไทย']);
+  const languages = ref([
+    { type: 'jp', name: '日本語' },
+    { type: 'en-us', name: 'English' },
+    { type: 'th', name: 'ภาษาไทย' },
+    { type: 'zh-cn', name: '繁体中文' },
+  ]);
   const tabItem = [
     { key: 'home', icon: Home },
     { key: 'list', icon: Horizontal },
@@ -69,7 +75,7 @@
 
   const routerItem = ['/titleParaphrasing', '/bodyTextParaphrasing', '/titleOptimization', '/bodyTextOptimization'];
 
-  const language = ref('English');
+  const language = ref(languages.value.find((item) => item.type === localStorage.getItem('lang') ?? 'English')?.name);
 
   const router = useRouter();
 
@@ -86,6 +92,13 @@
   const tabbarVisible = ref(true);
 
   const showBorder = ref(true);
+
+  const changeLang = (type) => {
+    setLang(type);
+    language.value = languages.value.find((item) => item.type === localStorage.getItem('lang') ?? 'English')?.name;
+    showLeft.value = false;
+    is_select.value = false;
+  };
 
   watch(
     () => router,
