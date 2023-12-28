@@ -14,8 +14,8 @@ export function loadLang() {
 export const i18n = createI18n({
   // globalInjection: true,
   legacy: false,
-  locale: localStorage.getItem('lang') ?? 'en-us',
-  fallbackLocale: 'en-us',
+  locale: localStorage.getItem('lang') ?? 'en',
+  fallbackLocale: 'en',
   messages: loadLang(),
 });
 
@@ -23,5 +23,5 @@ export function setLang(locale?: string) {
   if (locale) {
     localStorage.setItem('lang', locale);
   }
-  i18n.global.locale.value = locale || localStorage.getItem('lang') || 'en-us';
+  i18n.global.locale.value = locale || localStorage.getItem('lang') || 'en';
 }

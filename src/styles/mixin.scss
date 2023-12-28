@@ -7,7 +7,7 @@
 }
 // 背景图多语言
 @mixin loop-lang-bg($preUrl, $posUrl) {
-  $list: zh-cn, en-us;
+  $list: zh-cn, en;
   @each $i in $list {
     &.#{$i} {
       background-image: url('#{$preUrl}/#{$i}/#{$posUrl}');

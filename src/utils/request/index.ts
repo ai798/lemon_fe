@@ -3,7 +3,7 @@ import { showToast } from 'vant';
 
 const service: AxiosInstance = axios.create({
   withCredentials: false,
-  timeout: 10000,
+  timeout: 10 * 60 * 1000, // 请求超时时间
 });
 
 service.interceptors.request.use(
@@ -18,11 +18,13 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     const res = response.data;
-    if (res.code !== 200) {
+    console.log('response', response);
+    console.log(res);
+    if (response.status !== 200) {
       showToast(res.msg);
       return Promise.reject(res.msg || 'Error');
     } else {
-      return res;
+      return Promise.resolve(res);
     }
   },
   (error: AxiosError) => {

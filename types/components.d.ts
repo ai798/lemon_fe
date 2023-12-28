@@ -26,6 +26,7 @@ declare module 'vue' {
     NutTabbar: typeof import('@nutui/nutui')['Tabbar']
     NutTabbarItem: typeof import('@nutui/nutui')['TabbarItem']
     NutTextarea: typeof import('@nutui/nutui')['Textarea']
+    Promote: typeof import('./../src/components/promote/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']

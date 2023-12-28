@@ -1,36 +1,94 @@
 <template>
-  <p class="title">Title Paraphrasing</p>
+  <p class="title">{{ $t('homepage.lemonaidea_title_imitation') }}</p>
 
   <div class="main-box">
     <div class="title-box">
       <img src="@/assets/line.png" alt="" />
-      <span>输入你想仿写的爆款标题(必填)</span>
+      <span>{{ $t('fun_opt_title.lemonaidea_title_imitation_edit_tips_a') }}</span>
     </div>
-    <nut-textarea v-model="value" :rows="3" autosize placeholder="复制粘贴您参考的爆款笔记标题，为您一键仿写" />
+    <nut-textarea v-model="title" :rows="3" autosize :placeholder="$t('fun_opt_title.lemonaidea_title_imitation_edit_tips_b')" />
     <div class="title-box magin">
       <img src="@/assets/line.png" alt="" />
-      <span>输入你的笔记的内容主题</span>
+      <span>{{ $t('fun_opt_title.lemonaidea_title_imitation_edit_tips_c') }}</span>
     </div>
-    <nut-textarea v-model="value2" :rows="3" autosize placeholder="复制粘贴您参考的爆款笔记标题，为您一键仿写" />
-    <nut-button :loading="isLoading" :class="[!isDefault ? 'send' : 'could-send', isLoading ? 'could-send' : '']" @click="handleSend"
-      >{{ isLoading ? 'Thinking...' : 'Send' }}
+    <nut-textarea v-model="subject" :rows="3" autosize :placeholder="$t('fun_opt_title.lemonaidea_title_imitation_edit_tips_b')" />
+    <nut-button
+      :loading="isLoading"
+      :disabled="!isDefault"
+      :class="[!isDefault ? 'send' : 'could-send', isLoading ? 'could-send' : '']"
+      @click="handleSend"
+      >{{ isLoading ? 'Thinking...' : $t('fun_opt_title.lemonaidea_btn_send') }}
       <template #icon>
         <img v-if="!isDefault" class="send-icon" src="@/assets/white-arrow.png" alt="" />
         <img v-else class="send-icon" src="@/assets/light-white-arrow.png" alt=""
       /></template>
     </nut-button>
   </div>
+  <Promote v-if="resObj.length" :source="resObj" @change="handleReSend" />
 </template>
 
 <script lang="ts" setup>
-  const value = ref('');
-  const value2 = ref('');
+  import { reactive } from 'vue';
+  import { generate } from '@/api/index';
+  import { FunctionType } from '@/utils/enum';
+  import { showToast } from 'vant';
+  import { useI18n } from 'vue-i18n';
+
+  const { t } = useI18n();
+  const title = ref('');
+  const subject = ref('');
   const isLoading = ref(false);
-  const isDefault = computed(() => value.value || value2.value);
+  const resObj = ref([] as any);
+  const isDefault = computed(() => title.value);
+  const lang = computed(() => {
+    return localStorage.getItem('lang');
+  });
+  const handleReSend = () => {
+    let objEle = {
+      gen_type: FunctionType.TITLE_PARA,
+      title: localStorage.getItem('title'),
+      subject: localStorage.getItem('subject'),
+      text: '',
+    };
+
+    generate(objEle, lang.value)
+      .then((res) => {
+        if (res.errCode === 0) {
+          resObj.value = res.payload.titles;
+        } else {
+          showToast(t('all.lemonaidea_toast_fail'));
+        }
+      })
+      .finally(() => {})
+      .catch((err) => showToast(t('all.lemonaidea_toast_fail')));
+    title.value = '';
+    subject.value = '';
+  };
   const handleSend = () => {
-    value.value = '';
-    value2.value = '';
+    let objEle = {
+      gen_type: FunctionType.TITLE_PARA,
+      title: title.value,
+      subject: subject.value,
+      text: '',
+    };
+    localStorage.setItem('title', title.value);
+    localStorage.setItem('subject', subject.value);
     isLoading.value = true;
+
+    generate(objEle, lang.value)
+      .then((res) => {
+        if (res.errCode === 0) {
+          resObj.value = res.payload.titles;
+        } else {
+          showToast(t('all.lemonaidea_toast_fail'));
+        }
+      })
+      .finally(() => {
+        isLoading.value = false;
+      })
+      .catch((err) => showToast(t('all.lemonaidea_toast_fail')));
+    title.value = '';
+    subject.value = '';
   };
 </script>
 
@@ -65,7 +123,7 @@
         font-family: system-ui;
         font-size: 32px;
         font-weight: 700;
-        line-height: 24px;
+        line-height: 32px;
         letter-spacing: 0em;
         text-align: left;
       }

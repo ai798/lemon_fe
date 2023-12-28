@@ -1,3 +1,5 @@
+import { i18n } from '@/i18n/index';
+
 export const routes = [
   {
     path: '/',
@@ -47,26 +49,104 @@ export const routes = [
       },
       //内容页
       {
-        name: 'titleParaphrasing',
-        path: '/titleParaphrasing',
+        name: 'title_paraphrasing',
+        path: `/:lang/title_paraphrasing`,
         component: () => import('@/views/content/titleParaphrasing.vue'),
+        children: [
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'en',
+            component: import('@/views/content/titleParaphrasing.vue'),
+          },
+          {
+            // 当 /user/:id/posts 匹配成功
+            // UserPosts 将被渲染到 User 的 <router-view> 内部
+            path: 'ja',
+            component: import('@/views/content/titleParaphrasing.vue'),
+          },
+          {
+            // 当 /user/:id/posts 匹配成功
+            // UserPosts 将被渲染到 User 的 <router-view> 内部
+            path: 'th',
+            component: import('@/views/content/titleParaphrasing.vue'),
+          },
+          {
+            // 当 /user/:id/posts 匹配成功
+            // UserPosts 将被渲染到 User 的 <router-view> 内部
+            path: 'zh-cn',
+            component: import('@/views/content/titleParaphrasing.vue'),
+          },
+        ],
         meta: {
           title: 'TitleParaphrasing',
           border: false,
         },
       },
       {
-        name: 'bodyTextParaphrasing',
-        path: '/bodyTextParaphrasing',
+        name: 'bodyText_paraphrasing',
+        path: '/:lang/bodyText_paraphrasing',
         component: () => import('@/views/content/bodyTextParaphrasing.vue'),
+        children: [
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'en',
+            component: import('@/views/content/bodyTextParaphrasing.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'ja',
+            component: import('@/views/content/bodyTextParaphrasing.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'th',
+            component: import('@/views/content/bodyTextParaphrasing.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'zh-cn',
+            component: import('@/views/content/bodyTextParaphrasing.vue'),
+          },
+        ],
         meta: {
           title: 'BodyTextParaphrasing',
           border: false,
         },
       },
       {
-        name: 'titleOptimization',
-        path: '/titleOptimization',
+        name: 'title_optimization',
+        path: '/:lang/title_optimization',
+        children: [
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'en',
+            component: import('@/views/content/titleOptimization.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'th',
+            component: import('@/views/content/titleOptimization.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'ja',
+            component: import('@/views/content/titleOptimization.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'zh-cn',
+            component: import('@/views/content/titleOptimization.vue'),
+          },
+        ],
         component: () => import('@/views/content/titleOptimization.vue'),
         meta: {
           title: 'TitleOptimization',
@@ -74,8 +154,34 @@ export const routes = [
         },
       },
       {
-        name: 'bodyTextOptimization',
-        path: '/bodyTextOptimization',
+        name: 'bodyText_optimization',
+        path: '/:lang/bodyText_optimization',
+        children: [
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'en',
+            component: import('@/views/content/bodyTextOptimization.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'th',
+            component: import('@/views/content/bodyTextOptimization.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'ja',
+            component: import('@/views/content/bodyTextOptimization.vue'),
+          },
+          {
+            // 当 /user/:id/profile 匹配成功
+            // UserProfile 将被渲染到 User 的 <router-view> 内部
+            path: 'zh-cn',
+            component: import('@/views/content/bodyTextOptimization.vue'),
+          },
+        ],
         component: () => import('@/views/content/bodyTextOptimization.vue'),
         meta: {
           title: 'BodyTextOptimization',
@@ -97,7 +203,7 @@ export const routes = [
   {
     // 找不到路由重定向到404页面
     path: '/:pathMatch(.*)',
-    redirect: '/Home',
+    redirect: '/home',
   },
 ];
 

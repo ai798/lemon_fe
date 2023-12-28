@@ -9,3 +9,22 @@ export function loginPassword() {
     data: { name: '123' },
   });
 }
+
+/**
+ * 生成内容
+ * @returns UseAxiosReturn
+ */
+export function generate(data: any, lang) {
+  return http.post(`/api/chat/generate`, data, {
+    headers: {
+      'Accept-Language': lang,
+    },
+  });
+}
+/**
+ * 发送反馈
+ * @returns UseAxiosReturn
+ */
+export function sendFB(data: any) {
+  return http.post(`/api/user/feedback`, data);
+}

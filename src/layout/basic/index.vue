@@ -9,7 +9,7 @@
     </template>
     <template #left>
       <img v-if="!showLeft && !isShowBack" src="@/assets/icon_back.png" @click="showLeft = true" />
-      <img v-if="isShowBack" src="@/assets/back.png" @click="router.back()" />
+      <img v-if="isShowBack" src="@/assets/back.png" @click="router.push('/home')" />
       <img v-else-if="showLeft && !isShowBack" src="@/assets/close_icon.png" @click="showLeft = false" />
     </template>
   </nut-navbar>
@@ -17,13 +17,13 @@
   <!-- <van-nav-bar :title="$t($route.meta.title as string)" :left-arrow="!tabbarVisible" @click-left="goBack" /> -->
   <nut-popup position="left" pop-class="pop_style" :style="{ width: '20%', height: '100%' }" v-model:visible="showLeft" :overlay="false">
     <template #default>
-      <div class="option_panel">
+      <div @click="handleGoIns" class="option_panel">
         <img class="small_icon" src="@/assets/instagram.png" alt="" />
         <span>Instagram</span>
       </div>
-      <div class="option_panel">
+      <div class="option_panel" @click="handleOpenFB">
         <img class="small_icon" src="@/assets/mail.png" alt="" />
-        <span>Feedback</span>
+        <span>{{ $t('login.lemonaidea_feedback') }}</span>
       </div>
       <div class="option_panel" @click="is_select = !is_select">
         <img class="small_icon" src="@/assets/earth.png" alt="" />
@@ -38,8 +38,14 @@
   </nut-popup>
   <nut-popup pop-class="tips" :style="{ padding: '30px 50px' }" v-model:visible="showTips" closeable close-icon-position="top-right">
     <p class="tips-title">💡 TIPS</p>
-    <p class="tips-span">Function temporarily open for free, with 10 daily chances to experience.</p>
-    <nut-button class="confirm" type="default" @click="showTips = !showTips">Confirm</nut-button>
+    <p class="tips-span">{{ $t('limit_free.lemonaidea_limited_free_desc') }}</p>
+    <nut-button class="confirm" type="default" @click="showTips = !showTips">{{ $t('limit_free.lemonaidea_limited_free_btn') }}</nut-button>
+  </nut-popup>
+
+  <nut-popup pop-class="tips" :style="{ padding: '30px 50px' }" v-model:visible="showFeedBack" closeable close-icon-position="top-right">
+    <p class="tips-title">{{ $t('feedback.lemonaidea_feedback') }}</p>
+    <nut-textarea v-model="feedback" :rows="3" autosize :placeholder="$t('fun_content_opt.lemonaidea_text_improve_edit_tips_b')" />
+    <nut-button class="confirm" type="default" @click="handleSendFB">{{ $t('feedback.lemonaidea_feedback_confirm') }}</nut-button>
   </nut-popup>
 
   <div class="main-page" :class="{ tabbar: tabbarVisible, border: showBorder }">
@@ -59,10 +65,13 @@
   import { useRouter } from 'vue-router';
   import { Home, Horizontal, My, Location } from '@nutui/icons-vue';
   import { setLang } from '@/i18n';
+  import { useI18n } from 'vue-i18n';
+  import { sendFB } from '@/api/index';
+  import { showToast } from 'vant';
 
   const languages = ref([
-    { type: 'jp', name: '日本語' },
-    { type: 'en-us', name: 'English' },
+    { type: 'ja', name: '日本語' },
+    { type: 'en', name: 'English' },
     { type: 'th', name: 'ภาษาไทย' },
     { type: 'zh-cn', name: '繁体中文' },
   ]);
@@ -72,10 +81,9 @@
     { key: 'member', icon: My },
     { key: 'demo', icon: Location },
   ];
-
-  const routerItem = ['/titleParaphrasing', '/bodyTextParaphrasing', '/titleOptimization', '/bodyTextOptimization'];
-
+  const { locale } = useI18n();
   const language = ref(languages.value.find((item) => item.type === localStorage.getItem('lang') ?? 'English')?.name);
+  const routerItem = reactive([`title_paraphrasing`, `bodyText_paraphrasing`, `title_optimization`, `bodyText_optimization`]) as any;
 
   const router = useRouter();
 
@@ -89,10 +97,30 @@
 
   const activeTab = ref(0);
 
+  const feedback = ref('');
+
   const tabbarVisible = ref(true);
 
   const showBorder = ref(true);
 
+  const showFeedBack = ref(false);
+  const handleOpenFB = () => {
+    showFeedBack.value = true;
+    showLeft.value = false;
+  };
+  const handleSendFB = () => {
+    sendFB({ feedback: feedback.value })
+      .then((res) => {
+        if (res.errCode === 0) {
+          showToast('ok');
+        }
+      })
+      .finally(() => {});
+    showFeedBack.value = false;
+  };
+  const handleGoIns = () => {
+    window.open('https://www.instagram.com/lemonaidea');
+  };
   const changeLang = (type) => {
     setLang(type);
     language.value = languages.value.find((item) => item.type === localStorage.getItem('lang') ?? 'English')?.name;
@@ -103,8 +131,14 @@
   watch(
     () => router,
     () => {
+      if (router.currentRoute.value.params) {
+        const lang = router.currentRoute.value.params.lang;
+        console.log(lang);
+        setLang(lang);
+      }
+      console.log('router.currentRoute.value', router.currentRoute.value.params);
       const judgeRoute = tabItem.some((item) => item.key === router.currentRoute.value.path.replace('/', ''));
-      const showBack = routerItem.includes(router.currentRoute.value.path);
+      const showBack = routerItem.includes(router.currentRoute.value.name);
       activeTab.value = tabItem.findIndex((item) => item.key === router.currentRoute.value.path.replace('/', ''));
       tabbarVisible.value = judgeRoute;
       showBorder.value = judgeRoute;

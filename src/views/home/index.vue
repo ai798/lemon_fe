@@ -53,7 +53,7 @@
     <nut-button shape="square" size="small" type="default" @click="changeLang('zh-cn')">
       {{ $t('language.zh') }}
     </nut-button>
-    <nut-button shape="square" size="small" type="default" @click="changeLang('en-us')">
+    <nut-button shape="square" size="small" type="default" @click="changeLang('en')">
       {{ $t('language.en') }}
     </nut-button>
   </div> -->
@@ -78,19 +78,20 @@
     return name;
   });
 
+  const computedLang = computed(() => localStorage.getItem('lang'));
   const handleGoto = (index) => {
     switch (index) {
       case 0:
-        router.push('/titleParaphrasing');
+        router.push(`/${locale.value}/title_paraphrasing`);
         break;
       case 1:
-        router.push('/bodyTextParaphrasing');
+        router.push(`/${locale.value}/bodyText_paraphrasing`);
         break;
       case 2:
-        router.push('/titleOptimization');
+        router.push(`/${locale.value}/title_optimization`);
         break;
       case 3:
-        router.push('/bodyTextOptimization');
+        router.push(`/${locale.value}/bodyText_optimization`);
         break;
     }
   };
@@ -155,8 +156,10 @@
     grid-template-columns: 50% 50%;
     grid-row-gap: 10px;
     margin-top: 20px;
+    justify-items: center;
     .grid {
-      width: 336px;
+      padding: 0 20px;
+      width: 286px;
       height: 398px;
       // top: 266px;
       // left: 16px;

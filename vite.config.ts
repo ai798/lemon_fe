@@ -35,9 +35,19 @@ export default function ({ command, mode }: ConfigEnv): UserConfig {
       ],
     },
     server: {
-      host: `0.0.0.0`,
       port: 4396,
       open: true,
+      proxy: {
+        '/api': {
+          target: 'http://8.218.221.95:18001',
+          changeOrigin: true,
+          configure: (proxy) => {
+            proxy.on('proxyReq', function (proxyReq, req, res, options) {
+              // proxyReq.setHeader('cookie', cookie);
+            });
+          },
+        },
+      },
     },
     plugins: createVitePlugins(viteEnv, isProduction),
     build: {
