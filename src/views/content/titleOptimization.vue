@@ -45,7 +45,7 @@
   });
   const handleReSend = () => {
     let objEle = {
-      gen_type: FunctionType.BODY_PARA,
+      gen_type: FunctionType.TITLE_OPT,
       title: localStorage.getItem('title'),
       subject: localStorage.getItem('subject'),
       text: '',
@@ -66,7 +66,7 @@
   };
   const handleSend = () => {
     let objEle = {
-      gen_type: FunctionType.BODY_PARA,
+      gen_type: FunctionType.TITLE_OPT,
       title: title.value,
       subject: subject.value,
       text: '',

@@ -168,6 +168,25 @@
     activeTab.value = index;
   };
 
+  onMounted(() => {
+    if (!localStorage.getItem('lang')) {
+      let initLang = '';
+      let userLang = window.navigator.language;
+      if (userLang.indexOf('zh') !== -1) {
+        initLang = 'zh-cn';
+      } else if (userLang.indexOf('ja') !== -1) {
+        initLang = 'ja';
+      } else if (userLang.indexOf('th') !== -1) {
+        initLang = 'th';
+      } else if (userLang.indexOf('en') !== -1) {
+        initLang = 'en';
+      } else {
+        initLang = 'en';
+      }
+      setLang(initLang);
+      language.value = languages.value.find((item) => item.type === initLang)?.name;
+    }
+  });
   const goBack = () => {
     router.go(-1);
   };

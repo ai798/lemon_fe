@@ -46,15 +46,15 @@
   const handleReSend = () => {
     let objEle = {
       gen_type: FunctionType.BODY_OPT,
-      title: localStorage.getItem('title'),
+      title: '',
       subject: localStorage.getItem('subject'),
-      text: '',
+      text: localStorage.getItem('title'),
     };
 
     generate(objEle, lang.value)
       .then((res) => {
         if (res.errCode === 0) {
-          resObj.value = res.payload.titles;
+          resObj.value = res.payload.texts;
         } else {
           showToast(t('all.lemonaidea_toast_fail'));
         }
@@ -67,9 +67,9 @@
   const handleSend = () => {
     let objEle = {
       gen_type: FunctionType.BODY_OPT,
-      title: title.value,
+      title: '',
       subject: subject.value,
-      text: '',
+      text: title.value,
     };
     localStorage.setItem('title', title.value);
     localStorage.setItem('subject', subject.value);
@@ -78,7 +78,7 @@
     generate(objEle, lang.value)
       .then((res) => {
         if (res.errCode === 0) {
-          resObj.value = res.payload.titles;
+          resObj.value = res.payload.texts;
         } else {
           showToast(t('all.lemonaidea_toast_fail'));
         }

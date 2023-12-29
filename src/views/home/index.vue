@@ -149,7 +149,7 @@
   }
 
   .btn-confirm {
-    @include main-lang-bg(302px, 82px, '/@/assets/button', 'confirm.png');
+    // @include main-lang-bg(302px, 82px, '/@/assets/button', 'confirm.png');
   }
   .grid_box {
     display: grid;
