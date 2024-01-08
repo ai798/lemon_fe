@@ -5,8 +5,8 @@
       <span>{{ $t('fun_opt_title.lemonaidea_title_imitation_result') }}</span>
     </div>
     <div class="content-box" v-for="(item, index) in props.source" :key="index"
-      ><span>{{ item }}</span> <img @click="copyElement(item)" src="@/assets/copy.png" alt=""
-    /></div>
+      ><span>{{ item }}</span> <button> <img class="btn" @click="copyElement(item)" src="@/assets/copy.png" alt="" /></button
+    ></div>
     <nut-button
       :loading="isLoading"
       :disabled="!isDefault"
