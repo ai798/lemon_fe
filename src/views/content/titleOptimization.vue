@@ -61,8 +61,8 @@
       })
       .finally(() => {})
       .catch((err) => showToast(t('all.lemonaidea_toast_fail')));
-    title.value = '';
-    subject.value = '';
+    // title.value = '';
+    // subject.value = '';
   };
   const handleSend = () => {
     let objEle = {
@@ -87,8 +87,8 @@
         isLoading.value = false;
       })
       .catch((err) => showToast(t('all.lemonaidea_toast_fail')));
-    title.value = '';
-    subject.value = '';
+    // title.value = '';
+    // subject.value = '';
   };
 </script>
 
