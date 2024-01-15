@@ -25,24 +25,33 @@
         <img class="small_icon" src="@/assets/mail.png" alt="" />
         <span>{{ $t('login.lemonaidea_feedback') }}</span>
       </div>
-      <div class="option_panel" @click="is_select = !is_select">
+      <div :class="['option_panel', !is_select ? 'active' : '']" @click="is_select = !is_select">
         <img class="small_icon" src="@/assets/earth.png" alt="" />
         <span>{{ language }}</span>
         <img v-if="!is_select" class="small_icon_arrow" src="@/assets/chevron-down.png" alt="" />
         <img v-else class="small_icon_arrow" src="@/assets/chevron-up.png" alt="" />
       </div>
-      <div class="option_panel" v-show="is_select" v-for="item in languages" :key="item.type">
-        <span @click="changeLang(item.type)">{{ item.name }}</span>
+      <div
+        :class="['option_panel', item.name === Lang ? 'active_select' : '']"
+        v-show="is_select"
+        v-for="item in languages"
+        :key="item.type"
+      >
+        <div class="option_box">
+          <span @click="changeLang(item.type, item.name)">{{ item.name }}</span>
+        </div>
       </div>
     </template>
   </nut-popup>
   <nut-popup pop-class="tips" :style="{ padding: '30px 50px' }" v-model:visible="showTips" closeable close-icon-position="top-right">
+    <template #close-icon><img style="width: 24px; height: 24px" src="@/assets/close.png" alt="" /> </template>
     <p class="tips-title">💡 TIPS</p>
     <p class="tips-span">{{ $t('limit_free.lemonaidea_limited_free_desc') }}</p>
     <nut-button class="confirm" type="default" @click="showTips = !showTips">{{ $t('limit_free.lemonaidea_limited_free_btn') }}</nut-button>
   </nut-popup>
 
   <nut-popup pop-class="tips" :style="{ padding: '30px 50px' }" v-model:visible="showFeedBack" closeable close-icon-position="top-right">
+    <template #close-icon><img style="width: 24px; height: 24px" src="@/assets/close.png" alt="" /> </template>
     <p class="tips-title">{{ $t('feedback.lemonaidea_feedback') }}</p>
     <nut-textarea v-model="feedback" :rows="3" autosize :placeholder="$t('fun_content_opt.lemonaidea_text_improve_edit_tips_b')" />
     <nut-button class="confirm" type="default" @click="handleSendFB">{{ $t('feedback.lemonaidea_feedback_confirm') }}</nut-button>
@@ -73,7 +82,7 @@
     { type: 'ja', name: '日本語' },
     { type: 'en', name: 'English' },
     { type: 'th', name: 'ภาษาไทย' },
-    { type: 'zh-cn', name: '繁体中文' },
+    { type: 'zh-hk', name: '繁体中文' },
   ]);
   const tabItem = [
     { key: 'home', icon: Home },
@@ -81,6 +90,7 @@
     { key: 'member', icon: My },
     { key: 'demo', icon: Location },
   ];
+  const Lang = ref('' as string);
   const { locale } = useI18n();
   const language = ref(languages.value.find((item) => item.type === localStorage.getItem('lang') ?? 'English')?.name);
   const routerItem = reactive([`title_paraphrasing`, `bodyText_paraphrasing`, `title_optimization`, `bodyText_optimization`]) as any;
@@ -121,11 +131,12 @@
   const handleGoIns = () => {
     window.open('https://www.instagram.com/lemonaidea');
   };
-  const changeLang = (type) => {
+  const changeLang = (type, name) => {
     setLang(type);
     language.value = languages.value.find((item) => item.type === localStorage.getItem('lang') ?? 'English')?.name;
     showLeft.value = false;
     is_select.value = false;
+    Lang.value = name;
   };
 
   watch(
@@ -135,6 +146,7 @@
         const lang = router.currentRoute.value.params.lang;
         console.log(lang);
         setLang(lang);
+        // Lang.value = languages.value.find((item) => item.type === lang)?.name ?? '';
       }
       console.log('router.currentRoute.value', router.currentRoute.value.params);
       const judgeRoute = tabItem.some((item) => item.key === router.currentRoute.value.path.replace('/', ''));
@@ -173,18 +185,25 @@
       let initLang = '';
       let userLang = window.navigator.language;
       if (userLang.indexOf('zh') !== -1) {
-        initLang = 'zh-cn';
+        initLang = 'zh-hk';
+        Lang.value = '繁体中文';
       } else if (userLang.indexOf('ja') !== -1) {
         initLang = 'ja';
+        Lang.value = '日本語';
       } else if (userLang.indexOf('th') !== -1) {
         initLang = 'th';
+        Lang.value = 'ภาษาไทย';
       } else if (userLang.indexOf('en') !== -1) {
         initLang = 'en';
+        Lang.value = 'English';
       } else {
         initLang = 'en';
+        Lang.value = 'English';
       }
       setLang(initLang);
       language.value = languages.value.find((item) => item.type === initLang)?.name;
+    } else {
+      Lang.value = languages.value.find((item) => item.type === localStorage.getItem('lang'))?.name ?? '';
     }
   });
   const goBack = () => {
@@ -196,7 +215,6 @@
   /* rootValue: 37.5 */
   .nut-navbar--placeholder {
     height: 112px;
-    margin-bottom: 40px;
   }
   .icon {
     position: relative;
@@ -233,8 +251,8 @@
   }
 
   .border {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 32px;
+    padding-right: 32px;
   }
   .option_panel {
     display: flex;
@@ -243,6 +261,19 @@
     top: 320px;
     padding: 8px 32px;
   }
+  .option_box {
+    width: 100%;
+    height: 100%;
+    line-height: 100px;
+  }
+  .active {
+    border-radius: 4px;
+    background: #f3f3f3;
+  }
+  .active_select {
+    border-radius: 4px;
+    background: #e9edf5;
+  }
   .small_icon_arrow {
     width: 32px;
     height: 32px;
@@ -250,7 +281,6 @@
   .tips-title {
     color: #656565;
     text-align: center;
-    margin-top: 40px;
     font-family:
       system-ui,
       -apple-system,
@@ -264,6 +294,8 @@
       'Helvetica Neue',
       sans-serif;
     font-weight: 700;
+    font-size: 36px;
+    margin-top: 48px;
   }
   .tips-span {
     font-family: system-ui;
@@ -272,12 +304,13 @@
     line-height: 48px;
     letter-spacing: 0em;
     padding: 0 32px;
+    margin-top: 32px;
   }
   .confirm {
     width: 622px;
     left: 32px;
     padding: 10px 26px 10px 26px;
-    border-radius: 16px;
+    border-radius: 32px;
     gap: 10px;
     height: 96px;
     background-color: #1e232d;
@@ -288,6 +321,8 @@
     letter-spacing: 0em;
     text-align: left;
     color: #ffffff;
+    position: absolute;
+    bottom: 48px;
   }
 </style>
 <style>
@@ -300,11 +335,10 @@
       background: none;
     } */
   .tips {
-    display: flex;
     flex-direction: column;
     width: 686px;
     height: 416px;
-    border-radius: 24px;
+    border-radius: 48px;
     padding: 0 !important;
     justify-content: space-around;
   }

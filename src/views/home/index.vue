@@ -12,45 +12,57 @@
   </div>
   <div class="grid_box">
     <div class="grid yellow">
-      <div class="grid_title">
-        <p>{{ $t('homepage.lemonaidea_title_imitation') }}</p>
-      </div>
-      <div class="grid_button" @click="handleGoto(0)">
-        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
-        <img src="@/assets/arrow-right.png" alt="" />
+      <div class="grid_inner">
+        <div class="grid_title">
+          <p>{{ $t('homepage.lemonaidea_title_imitation') }}</p>
+        </div>
+        <div class="img_box"><img src="@/assets/arrow_right.png" alt="" /></div>
+        <div class="grid_button" @click="handleGoto(0)">
+          <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
+          <img src="@/assets/arrow-right.png" alt="" />
+        </div>
       </div>
     </div>
     <div class="grid light_yellow">
-      <div class="grid_title">
-        <p>{{ $t('homepage.lemonaidea_text_imitation') }}</p>
-      </div>
-      <div class="grid_button" @click="handleGoto(1)">
-        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
-        <img src="@/assets/arrow-right.png" alt="" />
+      <div class="grid_inner">
+        <div class="grid_title">
+          <p>{{ $t('homepage.lemonaidea_text_imitation') }}</p>
+        </div>
+        <div class="img_box"><img src="@/assets/arrow_right.png" alt="" /></div>
+        <div class="grid_button" @click="handleGoto(1)">
+          <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
+          <img src="@/assets/arrow-right.png" alt="" />
+        </div>
       </div>
     </div>
     <div class="grid purple">
-      <div class="grid_title">
-        <p>{{ $t('homepage.lemonaidea_title_improve') }}</p>
-      </div>
-      <div class="grid_button lighting" @click="handleGoto(2)">
-        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
-        <img src="@/assets/arrow-right-light.png" alt="" />
+      <div class="grid_inner">
+        <div class="grid_title">
+          <p>{{ $t('homepage.lemonaidea_title_improve') }}</p>
+        </div>
+        <div class="img_box"><img src="@/assets/arrow_right_purple.png" alt="" /></div>
+        <div class="grid_button lighting_purple" @click="handleGoto(2)">
+          <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
+          <img src="@/assets/arrow-right-light.png" alt="" />
+        </div>
       </div>
     </div>
     <div class="grid green">
-      <div class="grid_title">
-        <p>{{ $t('homepage.lemonaidea_text_improve') }}</p>
-      </div>
-      <div class="grid_button lighting" @click="handleGoto(3)">
-        <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
-        <img src="@/assets/arrow-right-light.png" alt="" />
+      <div class="grid_inner">
+        <div class="grid_title">
+          <p>{{ $t('homepage.lemonaidea_text_improve') }}</p>
+        </div>
+        <div class="img_box"><img src="@/assets/arrow_right_light.png" alt="" /></div>
+        <div class="grid_button lighting" @click="handleGoto(3)">
+          <span>{{ $t('homepage.lemonaidea_btn_get_started') }}</span>
+          <img src="@/assets/arrow_light_down.png" alt="" />
+        </div>
       </div>
     </div>
   </div>
 
   <!-- <div class="btn-wrap">
-    <nut-button shape="square" size="small" type="default" @click="changeLang('zh-cn')">
+    <nut-button shape="square" size="small" type="default" @click="changeLang('zh-hk')">
       {{ $t('language.zh') }}
     </nut-button>
     <nut-button shape="square" size="small" type="default" @click="changeLang('en')">
@@ -106,7 +118,7 @@
     font-size: 40px;
     width: 654px;
     height: 48px;
-    margin-top: 64px;
+    margin-top: 48px;
     color: #1d2331;
     font-family: system-ui;
     font-size: 48px;
@@ -126,7 +138,7 @@
   .intro-header {
     opacity: 0.6;
     display: flex;
-    margin-top: 20px;
+    margin-top: 8px;
     font-size: 16px;
     font-family: system-ui;
     font-size: 40px;
@@ -155,19 +167,31 @@
     display: grid;
     grid-template-columns: 50% 50%;
     grid-row-gap: 10px;
-    margin-top: 20px;
+    margin-top: 48px;
     justify-items: center;
+    grid-row-gap: 16px;
+    grid-column-gap: 16px;
     .grid {
-      padding: 0 20px;
-      width: 286px;
+      // padding: 48px 32px;
+      // padding: 48px 32px;
+      width: 336px;
       height: 398px;
       // top: 266px;
       // left: 16px;
       border-radius: 48px;
-      display: flex;
-      justify-content: space-around;
+      display: inline-flex;
+      // justify-content: space-around;
       flex-direction: column;
       align-items: center;
+      .grid_inner {
+        width: 270px;
+        height: 398px;
+        padding: 48px 32px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     }
     .grid_title {
       font-family: system-ui;
@@ -176,6 +200,19 @@
       line-height: 40px;
       letter-spacing: 0em;
       text-align: left;
+      margin-bottom: 24px;
+      width: 100%;
+    }
+    .img_box {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      // margin-left: 32px;
+      img {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 70px;
+      }
     }
     .grid_button {
       border: 1px solid #2d2620;
@@ -191,6 +228,8 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      position: absolute;
+      bottom: 32px;
       img {
         width: 24px;
         height: 24px;
@@ -214,6 +253,9 @@
       color: #d8e55b;
     }
     .lighting {
+      border: 1px solid #d8e55b;
+    }
+    .lighting_purple {
       border: 1px solid #e2c3e7;
     }
   }

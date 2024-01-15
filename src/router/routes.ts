@@ -10,7 +10,7 @@ export const routes = [
         path: 'home',
         component: () => import('@/views/home/index.vue'),
         meta: {
-          title: 'tabbar.home',
+          title: 'lemonaidea',
           keepAlive: true,
         },
       },
@@ -74,7 +74,7 @@ export const routes = [
           {
             // 当 /user/:id/posts 匹配成功
             // UserPosts 将被渲染到 User 的 <router-view> 内部
-            path: 'zh-cn',
+            path: 'zh-hk',
             component: import('@/views/content/titleParaphrasing.vue'),
           },
         ],
@@ -109,7 +109,7 @@ export const routes = [
           {
             // 当 /user/:id/profile 匹配成功
             // UserProfile 将被渲染到 User 的 <router-view> 内部
-            path: 'zh-cn',
+            path: 'zh-hk',
             component: import('@/views/content/bodyTextParaphrasing.vue'),
           },
         ],
@@ -143,7 +143,7 @@ export const routes = [
           {
             // 当 /user/:id/profile 匹配成功
             // UserProfile 将被渲染到 User 的 <router-view> 内部
-            path: 'zh-cn',
+            path: 'zh-hk',
             component: import('@/views/content/titleOptimization.vue'),
           },
         ],
@@ -178,7 +178,7 @@ export const routes = [
           {
             // 当 /user/:id/profile 匹配成功
             // UserProfile 将被渲染到 User 的 <router-view> 内部
-            path: 'zh-cn',
+            path: 'zh-hk',
             component: import('@/views/content/bodyTextOptimization.vue'),
           },
         ],

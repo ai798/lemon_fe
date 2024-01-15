@@ -4,9 +4,12 @@
       <img src="@/assets/line.png" alt="" />
       <span>{{ $t('fun_opt_title.lemonaidea_title_imitation_result') }}</span>
     </div>
-    <div class="content-box" v-for="(item, index) in props.source" :key="index"
-      ><span>{{ item }}</span> <button> <img class="btn" @click="copyElement(item)" src="@/assets/copy.png" alt="" /></button
-    ></div>
+    <div class="content-box" v-for="(item, index) in props.source" :key="index">
+      <div class="result" :class="[!isShowAll ? `result-span` : '', 'basic-result']" v-html="item"></div>
+      <a class="show-all" @click="handleShowMore(index)" v-if="getActualWidthOfChars(item) > 650" v-show="!isShowAll">全文</a>
+      <!-- <button v-show="getActualWidthOfChars(item) < 650 || isShowAll"></button -->
+      <img v-show="getActualWidthOfChars(item) < 650 || isShowAll" class="btn" @click="copyElement(item)" src="@/assets/copy.png" alt="" />
+    </div>
     <nut-button
       :loading="isLoading"
       :disabled="!isDefault"
@@ -27,6 +30,8 @@
   import { useI18n } from 'vue-i18n';
   import { showToast } from 'vant';
 
+  const indexTarget = ref();
+  const isShowAll = ref(false);
   const props = withDefaults(
     defineProps<{
       source: Array<any>;
@@ -36,6 +41,20 @@
     },
   );
   const emits = defineEmits(['change']);
+  const getActualWidthOfChars = (text: any, options = {} as any) => {
+    const { size = 14, family = 'Microsoft YaHei' } = options;
+    const canvas = document.createElement('canvas');
+    const ctx: any = canvas.getContext('2d');
+    ctx.font = `${size}px ${family}`;
+    const metrics = ctx.measureText(text);
+    const actual = Math.abs(metrics.actualBoundingBoxLeft) + Math.abs(metrics.actualBoundingBoxRight);
+    return Math.max(metrics.width, actual);
+  };
+  const handleShowMore = (index: any) => {
+    indexTarget.value = index;
+
+    isShowAll.value = true;
+  };
   const { text, copy, copied, isSupported } = useClipboard({});
   const { t } = useI18n();
 
@@ -73,25 +92,55 @@
     text-align: left;
     height: 48px;
   }
+  .result-span {
+    display: inline-block;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 610px;
+    white-space: nowrap;
+    line-height: 44px;
+    font-weight: normal;
+    color: #1d2331;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  .basic-result {
+    line-height: 44px;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 44px;
+    flex: 1;
+  }
+  .show-all {
+    font-weight: normal;
+    font-size: 32px;
+    cursor: pointer;
+    text-decoration: underline;
+    line-height: 44px;
+  }
   .main-box-promote {
-    padding: 32px 32px;
+    padding: 48px 32px 32px;
     margin: 40px auto;
-    width: 640px;
-    min-height: 364px;
+    width: 618px;
+    min-height: 284px;
     border: 1px solid #7730d0;
-    border-radius: 32px;
+    border-radius: 64px;
     background-color: #fff;
     overflow: hidden;
     .title-box {
       display: flex;
       flex-direction: row;
       align-items: center;
+      margin-bottom: 24px;
+      line-height: 48px;
       span {
         line-height: 48px;
         font-family: system-ui;
         font-size: 32px;
         font-weight: 700;
-        line-height: 32px;
         letter-spacing: 0em;
         text-align: left;
       }
@@ -103,14 +152,18 @@
       }
     }
     .content-box {
-      width: 622px;
-      height: 84px;
+      width: 582px;
+      min-height: 84px;
       border-radius: 16px;
       margin: 12px 0;
+      padding: 0 20px;
       background: #7730d01a;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .result {
+        min-height: 84px;
+      }
       span {
         display: inline-block;
         word-break: break-all;
@@ -135,13 +188,14 @@
       background-color: #e0e2da;
       border: none;
       float: right;
-      margin-top: 20px;
+      margin-top: 32px;
       font-family: system-ui;
       font-size: 36px;
       font-weight: 500;
       line-height: 36px;
       letter-spacing: 0em;
       text-align: left;
+      align-self: flex-end;
     }
     .send-icon {
       width: 36px;
@@ -168,5 +222,9 @@
     height: 128px;
     border-radius: 16px;
     padding: 24px 24px;
+    &::active {
+      border-radius: 20px;
+      border: 2px solid #1d2331;
+    }
   }
 </style>

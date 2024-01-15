@@ -6,12 +6,28 @@
       <img src="@/assets/line.png" alt="" />
       <span>{{ $t('fun_content_mock.lemonaidea_text_imitation_edit_tips_a') }}</span>
     </div>
-    <nut-textarea v-model="title" :rows="3" autosize :placeholder="$t('fun_content_mock.lemonaidea_text_imitation_edit_tips_b')" />
+    <nut-textarea
+      @focus="onFoucusTextTop"
+      @blur="onBlurTextTop"
+      :class="[isActive ? 'active_text_area' : '']"
+      v-model="title"
+      :rows="2"
+      autosize
+      :placeholder="$t('fun_content_mock.lemonaidea_text_imitation_edit_tips_b')"
+    />
     <div class="title-box magin">
       <img src="@/assets/line.png" alt="" />
       <span>{{ $t('fun_content_mock.lemonaidea_text_imitation_edit_tips_c') }}</span>
     </div>
-    <nut-textarea v-model="subject" :rows="3" autosize :placeholder="$t('fun_content_mock.lemonaidea_text_imitation_edit_tips_d')" />
+    <nut-textarea
+      @focus="onFoucusText"
+      @blur="onBlurText"
+      :class="[isActiveBot ? 'active_text_area' : '']"
+      v-model="subject"
+      :rows="2"
+      autosize
+      :placeholder="$t('fun_content_mock.lemonaidea_text_imitation_edit_tips_d')"
+    />
     <nut-button
       :loading="isLoading"
       :disabled="!isDefault"
@@ -38,6 +54,8 @@
   const title = ref('');
   const subject = ref('');
   const isLoading = ref(false);
+  const isActive = ref(false);
+  const isActiveBot = ref(false);
   const resObj = ref([] as any);
   const isDefault = computed(() => title.value);
   const lang = computed(() => {
@@ -54,12 +72,14 @@
     generate(objEle, lang.value)
       .then((res) => {
         if (res.errCode === 0) {
-          resObj.value = res.payload.texts;
+          resObj.value = [...res.payload.texts, ...resObj.value];
         } else {
           showToast(t('all.lemonaidea_toast_fail'));
         }
       })
-      .finally(() => {})
+      .finally(() => {
+        isLoading.value = false;
+      })
       .catch((err) => showToast(t('all.lemonaidea_toast_fail')));
     // title.value = '';
     // subject.value = '';
@@ -90,6 +110,18 @@
     // title.value = '';
     // subject.value = '';
   };
+  const onBlurTextTop = () => {
+    isActive.value = false;
+  };
+  const onFoucusTextTop = () => {
+    isActive.value = true;
+  };
+  const onFoucusText = () => {
+    isActiveBot.value = true;
+  };
+  const onBlurText = () => {
+    isActiveBot.value = false;
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -105,25 +137,32 @@
     margin-left: 30px;
     text-align: left;
     height: 48px;
+    margin-top: 48px;
   }
   .main-box {
-    padding: 32px 32px;
+    padding: 48px 32px 32px;
     margin: 40px auto;
-    width: 640px;
+    width: 618px;
     min-height: 624px;
-    border-radius: 32px;
+    border-radius: 64px;
     background-color: #fff;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: center;
+    justify-content: space-evenly;
     .title-box {
       display: flex;
       flex-direction: row;
       align-items: center;
+      margin-bottom: 24px;
+      line-height: 48px;
       span {
         line-height: 48px;
         font-family: system-ui;
         font-size: 32px;
         font-weight: 700;
-        line-height: 32px;
         letter-spacing: 0em;
         text-align: left;
       }
@@ -142,13 +181,14 @@
       background-color: #e0e2da;
       border: none;
       float: right;
-      margin-top: 20px;
+      margin-top: 32px;
       font-family: system-ui;
       font-size: 36px;
       font-weight: 500;
       line-height: 36px;
       letter-spacing: 0em;
       text-align: left;
+      align-self: flex-end;
     }
     .send-icon {
       width: 36px;
@@ -158,6 +198,10 @@
     .could-send {
       background-color: #1e232d;
       color: #ffffff;
+    }
+    .active_text_area {
+      border-radius: 20px;
+      border: 2px solid #1d2331;
     }
   }
 </style>
